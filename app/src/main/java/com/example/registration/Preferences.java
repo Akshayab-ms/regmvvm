@@ -15,6 +15,62 @@ public class Preferences extends AppCompatActivity {
     Button buttonreg;
 
 
+    public EditText getUsername() {
+        return username;
+    }
+
+    public EditText getMail() {
+        return mail;
+    }
+
+    public EditText getPhone() {
+        return phone;
+    }
+
+    public EditText getPassword() {
+        return password;
+    }
+
+    public EditText getConfirmpwd() {
+        return confirmpwd;
+    }
+
+    public SharedPreferences getPreferences() {
+        return preferences;
+    }
+
+    public Button getButtonreg() {
+        return buttonreg;
+    }
+
+    public void setUsername(EditText username) {
+        this.username = username;
+    }
+
+    public void setMail(EditText mail) {
+        this.mail = mail;
+    }
+
+    public void setPhone(EditText phone) {
+        this.phone = phone;
+    }
+
+    public void setPassword(EditText password) {
+        this.password = password;
+    }
+
+    public void setConfirmpwd(EditText confirmpwd) {
+        this.confirmpwd = confirmpwd;
+    }
+
+    public void setPreferences(SharedPreferences preferences) {
+        this.preferences = preferences;
+    }
+
+    public void setButtonreg(Button buttonreg) {
+        this.buttonreg = buttonreg;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +81,7 @@ public class Preferences extends AppCompatActivity {
         password=findViewById(R.id.edt_pwd);
         confirmpwd=findViewById(R.id.edt_cnf);
         buttonreg=findViewById(R.id.button_sub);
+
 
 
         preferences  = getSharedPreferences("Userinfo", 0);
@@ -55,19 +112,21 @@ public class Preferences extends AppCompatActivity {
                 confirmpwd.setText("");
 
 
+
+
+
+
             }
+
         });
 
 
 
 
+
+
+
     }
-//    public void emptyField(){
-//        username.setText("");
-//        mail.setText("");
-//        phone.setText("");
-//        password.setText("");
-//        confirmpwd.setText("");
-//
-//    }
+
+
 }
