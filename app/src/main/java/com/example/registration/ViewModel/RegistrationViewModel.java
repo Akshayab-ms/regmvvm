@@ -1,17 +1,14 @@
 package com.example.registration.ViewModel;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ComponentActivity;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
 
-import com.example.registration.Preferences;
-
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,16 +19,31 @@ public class RegistrationViewModel extends AndroidViewModel {
 
     private Preferences prefm;
    public MutableLiveData<String> createNewUserLiveData = new MutableLiveData<String>();
-   public MutableLiveData<String> emailValidation = new MutableLiveData<>();
+    public MutableLiveData<String> mailLiveData = new MutableLiveData<String>();
+    public MutableLiveData<String> phoneLiveData = new MutableLiveData<String>();
+    public MutableLiveData<String> passwordLiveData = new MutableLiveData<String>();
    public RegistrationViewModel(@NonNull Application application) {
         super(application);
    }
-    public MutableLiveData<String> getCreateUserObserver(){
+
+    public MutableLiveData<String> getcreateNewUserLiveData(){
         return createNewUserLiveData;
+    }
+    public  MutableLiveData<String> getMailLiveData(){
+       return mailLiveData;
+    }
+    public  MutableLiveData<String> getPhoneLiveData(){
+        return phoneLiveData;
+    }
+    public  MutableLiveData<String> getPasswordLiveData(){
+        return passwordLiveData;
     }
 
 
-        SharedPreferences sharedpreferences = getApplication().getSharedPreferences("pref_key", Context.MODE_PRIVATE);
+
+
+
+    SharedPreferences sharedpreferences = getApplication().getSharedPreferences("pref_key", Context.MODE_PRIVATE);
 
 
         String varName = sharedpreferences.getString("username", "");
@@ -40,25 +52,31 @@ public class RegistrationViewModel extends AndroidViewModel {
       String varPwd = sharedpreferences.getString("password","");
         String varCpwd = sharedpreferences.getString("confipwd","");
 
-    public Preferences getPrefm() {
-        return prefm;
-    }
 
 
-    public void checkUserInputDetails(){
+    public boolean checkUserInputDetails(){
 
         if(!fcPhone(varPhone)){
-            emailValidation.setValue("Phone not match");
+            phoneLiveData.setValue("Phone not match");
         }else if(!fcMail(varMail)){
-            emailValidation.setValue("Mail not match");
-
+            mailLiveData.setValue("Mail not match");
+        }
+        else if(!fcpwd(varPwd,varName)) {
+            createNewUserLiveData.setValue("password not match");
+            passwordLiveData.setValue("jh");
+        }
+        else if(!fcpwd(varCpwd,varName)){
+            passwordLiveData.setValue("cnfpassword should be same as password");
         }
 
+
+        return false;
     }
 
 
     public  boolean fcPhone(String varPhone){
        this.varPhone=varPhone;
+       phoneLiveData.postValue(varPhone);
 
        if (varPhone.matches("\\d{10}"))
                return true;
@@ -81,17 +99,22 @@ public class RegistrationViewModel extends AndroidViewModel {
 
 
    }
-   public Boolean fcMail(String varMail){
+   public boolean fcMail(String varMail){
        this.varMail=varMail;
+       mailLiveData.postValue(varMail);
        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(varMail);
 
        return matcher.find();
    }
 
 
-    public void passwordValidation(String userName, String password)
+    public boolean fcpwd(String userName, String password)
     {
+        password=varPwd;
+        userName=varName;
         boolean valid = true;
+        passwordLiveData.postValue(varPwd);
+        createNewUserLiveData.postValue(varName);
         if (password.length() > 15 || password.length() < 8)
         {
             System.out.println("Password should be less than 15 and more than 8 characters in length.");
@@ -132,8 +155,7 @@ public class RegistrationViewModel extends AndroidViewModel {
         }
 
 
-
-
+        return valid;
     }
 
 
